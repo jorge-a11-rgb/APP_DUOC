@@ -7,11 +7,13 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { DBTaskService } from './dbtask.service';
+import { Usuario } from '../model/Usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  public usuario: Usuario;
   // Se crea un sujeto al cual van a observar y el que se actualizara con un valor booleano
   authState = new BehaviorSubject(false);
   constructor(
@@ -29,7 +31,6 @@ export class AuthenticationService {
   isLogged(){
     this.storage.get("USER_DATA").
     then((response)=>{
-      // eslint-disable-next-line @typescript-eslint/semi
       console.log(response)
       if(response!=null){
         this.authState.next(true); //Se establece en verdadero el estado de la authentication
@@ -61,7 +62,7 @@ export class AuthenticationService {
       .catch((error)=>console.error(error))
     });
   }
-  login(login: any){
+  login(login: Usuario){
     // Se obtiene si existe alguna data de sesión
     this.dbtaskService.getSesionData(login)
     .then((data)=>{ // Si se ejecuto correctamente la consulta
@@ -74,8 +75,7 @@ export class AuthenticationService {
           this.storage.set("USER_DATA",data); // Guardamos la data retornada
           this.authState.next(true);
           this.router.navigate(['home']); // Y se navega hasta el home
-
-        });
+         });
       }
     })
     .catch((error)=>{
