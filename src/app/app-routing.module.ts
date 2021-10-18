@@ -36,6 +36,10 @@ const routes: Routes = [
     path: 'vus',
     loadChildren: () => import('./pages/vus/vus.module').then( m => m.VusPageModule)
   },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
 ];
 
 @NgModule({
